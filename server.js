@@ -6,6 +6,8 @@ const cors = require("cors");
 const helmet = require("helmet");
 const routes = require("./routes.js");
 const passport = require("passport");
+const keys = require("./config/keys");
+
 const { validate, ValidationError, Joi } = require("express-validation");
 
 require("dotenv").config();
@@ -24,9 +26,10 @@ app.use(passport.initialize());
 require("./config/passport-config")(passport);
 
 // DB CONNECTION
+const url = keys.MongoDBURL;
 mongoose.connect(
   // process.env.MongoURI
-  "mongodb://vansh:a1a2a3a4@ds211613.mlab.com:11613/espace",
+  url,
   { useNewUrlParser: true },
   (err) => {
     if (err) {
@@ -43,13 +46,12 @@ mongoose.set("debug", true);
 app.get("/", function (req, res) {
   res.send("/ check");
 });
-app.use("/api", routes);
+app.use("/blogs", routes);
 
 app.use(function (err, req, res, next) {
   if (err instanceof ValidationError) {
     return res.json(err);
   }
-
   return res.status(500).json(err);
 });
 

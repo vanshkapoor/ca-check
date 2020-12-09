@@ -4,7 +4,7 @@ const Create = (req, res) => {
   console.log(req.body);
   new Blogs(req.body)
     .save()
-    .then((data) => res.status(400).json({ message: "Success" }))
+    .then((data) => res.status(200).json({ message: "Success" }))
     .catch((err) => {
       return res.status(400).json({ message: "error", error: err });
     });
